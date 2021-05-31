@@ -1,6 +1,10 @@
 pipeline {
 
-    agent any
+    agent {
+        node {
+            label 'agent1'
+        }
+    }
 
     stages {
 
@@ -12,4 +16,9 @@ pipeline {
 
         }
     }
-}
+    post {
+        always {
+            echo "post Action"
+         }
+        }
+    }
