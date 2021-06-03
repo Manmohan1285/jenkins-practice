@@ -1,4 +1,26 @@
-    ENVIRONMENT
+    pipeline {
+
+        agent {
+            node {
+                label 'agent'
+            }
+        }
+    }
+
+    stages {
+
+        stage('Hello') {
+            steps {
+                echo "Hello"
+
+            }
+        }
+    }
+    post {
+        always {
+            echo "Post Action"
+        }
+    }
 
     pipeline {
         agent any
