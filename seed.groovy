@@ -1,132 +1,98 @@
 folder('CI-Pipelines') {
-    displayName('CI-Pipelines')
-    description('CI-Pipelines')
+  displayName('CI Pipelines')
+  description('CI Pipelines')
 }
 
+def component = ["frontend","users","login","todo"];
 
-pipelineJob('CI-Pipelines/frontend-1-ci') {
+def count=(component.size()-1)
+for (i in 0..count) {
+  def j=component[i]
+  pipelineJob("CI-Pipelines/${j}-ci") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
           'userRemoteConfigs' {
             'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/Manmohan506/frontend-1.git')
+              'url'('https://github.com/Manmohan506/frontend.git/'+j+'.git')
+              'refspec'('\'+refs/tags/*\':\'refs/remotes/origin/tags/*\'')
             }
           }
           'branches' {
             'hudson.plugins.git.BranchSpec' {
-               'name'('*/main')
+              'name'('*/tags/*')
             }
           }
         }
-        'scriptPath'('Jenkinsfile')
+        'scriptPath'('jenkinsfile')
         'lightweight'(true)
       }
     }
   }
+}
 
-  pipelineJob('CI-Pipelines/catalogue-ci') {
+  pipelineJob("CI-Pipelines/login-ci") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
           'userRemoteConfigs' {
             'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/Manmohan506/catalogue.git')
+              'url'('https://github.com/Manmohan506/login.git')
             }
           }
           'branches' {
             'hudson.plugins.git.BranchSpec' {
-               'name'('*/main')
+              'name'('*/main')
             }
           }
         }
-        'scriptPath'('Jenkinsfile')
+        'scriptPath'('jenkinsfile')
         'lightweight'(true)
       }
     }
   }
 
-
-  pipelineJob('CI-Pipelines/cart-ci') {
+  pipelineJob("CI-Pipelines/users") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
           'userRemoteConfigs' {
             'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/Manmohan506/cart.git')
+              'url'('https://github.com/Manmohan506/users.git')
             }
           }
           'branches' {
             'hudson.plugins.git.BranchSpec' {
-               'name'('*/main')
+              'name'('*/main')
             }
           }
         }
-        'scriptPath'('Jenkinsfile')
+        'scriptPath'('jenkinsfile')
         'lightweight'(true)
       }
     }
-  }
+  }  
 
-  pipelineJob('CI-Pipelines/user-ci') {
+  pipelineJob("CI-Pipelines/todo-ci") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
           'userRemoteConfigs' {
             'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/Manmohan506/user.git')
+              'url'('https://github.com/Manmohan506/todo.git')
             }
           }
           'branches' {
             'hudson.plugins.git.BranchSpec' {
-               'name'('*/main')
+              'name'('*/main')
             }
           }
         }
-        'scriptPath'('Jenkinsfile')
+        'scriptPath'('jenkinsfile')
         'lightweight'(true)
       }
     }
   }
 
-  pipelineJob('CI-Pipelines/shipping-ci') {
-    configure { flowdefinition ->
-      flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
-        'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
-          'userRemoteConfigs' {
-            'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/Manmohan506/shipping.git')
-            }
-          }
-          'branches' {
-            'hudson.plugins.git.BranchSpec' {
-               'name'('*/main')
-            }
-          }
-        }
-        'scriptPath'('Jenkinsfile')
-        'lightweight'(true)
-      }
-    }
-  }
 
-  pipelineJob('CI-Pipelines/payment-ci') {
-    configure { flowdefinition ->
-      flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
-        'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
-          'userRemoteConfigs' {
-            'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/Manmohan506/payment.git')
-            }
-          }
-          'branches' {
-            'hudson.plugins.git.BranchSpec' {
-               'name'('*/main')
-            }
-          }
-        }
-        'scriptPath'('Jenkinsfile')
-        'lightweight'(true)
-      }
-    }
-  }
+
