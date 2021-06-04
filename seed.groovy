@@ -1,6 +1,6 @@
-folder('CI-Pipelines') {
-  displayName('CI Pipelines')
-  description('CI Pipelines')
+folder('CICD-Pipelines') {
+  displayName('CICD Pipelines')
+  description('CICD Pipelines')
 }
 
 def component = ["frontend","users","login","todo"];
@@ -8,19 +8,19 @@ def component = ["frontend","users","login","todo"];
 def count=(component.size()-1)
 for (i in 0..count) {
   def j=component[i]
-  pipelineJob("CI-Pipelines/${j}-ci") {
+  pipelineJob("CICD-Pipelines/${j}-ci") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
           'userRemoteConfigs' {
             'hudson.plugins.git.UserRemoteConfig' {
               'url'('https://github.com/Manmohan506/frontend.git/'+j+'.git')
-              'refspec'('\'+refs/tags/*\':\'refs/remotes/origin/tags/*\'')
+             
             }
           }
           'branches' {
             'hudson.plugins.git.BranchSpec' {
-              'name'('*/tags/*')
+              'name'('*/main')
             }
           }
         }
@@ -31,7 +31,7 @@ for (i in 0..count) {
   }
 }
 
-  pipelineJob("CI-Pipelines/login-ci") {
+  pipelineJob("CICD-Pipelines/login-ci") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
@@ -52,7 +52,7 @@ for (i in 0..count) {
     }
   }
 
-  pipelineJob("CI-Pipelines/users") {
+  pipelineJob("CICD-Pipelines/users") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
@@ -73,7 +73,7 @@ for (i in 0..count) {
     }
   }  
 
-  pipelineJob("CI-Pipelines/todo-ci") {
+  pipelineJob("CICD-Pipelines/todo-ci") {
     configure { flowdefinition ->
       flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
         'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
